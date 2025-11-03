@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { Container, TextInput, Button, Text, Loader, Paper, Title } from "@mantine/core";
+import axios from "axios";
+import '@mantine/core/styles.css';
+import './App.css';
+
+import { MantineProvider } from '@mantine/core';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [query, setQuery] = useState("");
+  const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSearch = async () => {
+    if (!query.trim()) return;
+    setLoading(true);
+    setError("");
+    setResponse("");
+    try {
+      const res = await axios.post("http://127.0.0.1:8000/generate", { query });
+      setResponse(res.data.result);
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <MantineProvider>
+      <div className="app-wrapper">
+        <Container size="sm" py="xl" className="centered-container">
+          <Paper shadow="sm" p="xl" radius="md" className="sparkly-paper">
+            <Title order={2} mb="md" align="center" className="sparkly-title">Legal Document Search</Title>
+            <TextInput
+              placeholder="Enter your legal query..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              mb="md"
+            />
+            <Button fullWidth onClick={handleSearch} disabled={loading} className="sparkly-button">
+              {loading ? <Loader size="xs" /> : "Search"}
+            </Button>
+
+            {error && <Text color="red" mt="md">{error}</Text>}
+            {response && (
+              <Paper mt="md" p="md" withBorder className="sparkly-response">
+                <Text>{response}</Text>
+              </Paper>
+            )}
+          </Paper>
+        </Container>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </MantineProvider>
+  );
 }
 
-export default App
+export default App;
