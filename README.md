@@ -11,17 +11,21 @@ A legal document search application with a React frontend and FastAPI backend.
 cd backend
 ```
 
-2. Activate the virtual environment:
+2. Create and activate the virtual environment:
 ```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
 # On Windows
 venv\Scripts\activate
 # On macOS/Linux
 source venv/bin/activate
 ```
 
-3. Install dependencies (if not already installed):
+3. Install dependencies from requirements.txt:
 ```bash
-pip install fastapi uvicorn pydantic
+pip install -r requirements.txt
 ```
 
 4. Run the backend server:
