@@ -3,6 +3,7 @@ import { Container, TextInput, Button, Text, Loader, Paper, Title } from "@manti
 import axios from "axios";
 import '@mantine/core/styles.css';
 import './App.css';
+import { API_BASE_URL } from './config';
 
 import { MantineProvider } from '@mantine/core';
 
@@ -18,7 +19,7 @@ function App() {
     setError("");
     setResponse("");
     try {
-      const res = await axios.post("http://127.0.0.1:8000/generate", { query });
+      const res = await axios.post(`${API_BASE_URL}/generate`, { query });
       setResponse(res.data.result);
     } catch (err) {
       setError("Something went wrong. Please try again.");
