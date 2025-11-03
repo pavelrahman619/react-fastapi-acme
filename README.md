@@ -73,3 +73,8 @@ Once the backend is running, visit the interactive API docs at:
 
 ## Future Implementation Plans
 - Make the law doc files into actual pdfs to read write into system
+- multiple file detection
+- real time search
+- add LangChain for LLM searching
+- Add database to search through large datasets
+- Add S3 Bucket to read write from cloud
